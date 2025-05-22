@@ -451,6 +451,7 @@ def main(batch: int = 1,
         config = get_heuristic_config()
         program = flashattn(batch, heads, groups, kv_seqlen, dim, tune=tune)(**config)
         kernel = tilelang.compile(program, out_idx=[6])
+        print(kernel.get_kernel_source())
         profiler = kernel.get_profiler(tensor_supply_type=tilelang.TensorSupplyType.Auto)
         profiler.assert_allclose(ref_program, rtol=0.01, atol=0.01)
         print("All checks pass.")

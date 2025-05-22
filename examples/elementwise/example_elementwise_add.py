@@ -69,10 +69,17 @@ def main():
         # Default config
         config = {"block_M": 128, "block_N": 256, "threads": 128}
         kernel = tilelang.compile(
-            elementwise_add(M, N, **config, in_dtype="float32", out_dtype="float32"), out_idx=-1)
+            elementwise_add(M, N, **config, in_dtype="float32", out_dtype="float32"), 
+            out_idx=-1)
+        
+        # Print the CUDA code
+        print("Generated CUDA code:")
+        print(kernel.get_kernel_source())
 
     out = kernel(a, b)
     torch.testing.assert_close(out, ref_program(a, b), rtol=1e-2, atol=1e-2)
+
+
 
 
 if __name__ == "__main__":

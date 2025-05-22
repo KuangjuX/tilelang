@@ -306,6 +306,7 @@ def main():
     ref_fn = partial(ref_program, causal=causal)
     kernel = tilelang.compile(
         program, out_idx=[5], pass_configs={tilelang.PassConfigKey.TL_DISABLE_TMA_LOWER: True})
+    print("Generated CUDA code:")   
     print(kernel.get_kernel_source())
     profiler = kernel.get_profiler(tensor_supply_type=tilelang.TensorSupplyType.Normal)
     profiler.assert_allclose(ref_fn, rtol=0.01, atol=0.01)
